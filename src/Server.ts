@@ -17,10 +17,10 @@ export class Server {
 			try {
 				this.upgrade(req, sock, head);
 			} catch (e) {
-				console.log(e);
-
 				if (e instanceof UnauthorizedUpgradeError) {
 					// Write http response.
+				} else {
+					throw e;
 				}
 			}
 		});
@@ -80,10 +80,7 @@ export class Server {
 	 * @returns
 	 */
 	getConnections(): Connection[] {
-		// Potential Bug: This is probably passed as a reference, if someone where
-		// to mutate the array, they could mutate the internal list of connections.
-
-		return this.connections;
+		return [...this.connections];
 	}
 
 	/**
