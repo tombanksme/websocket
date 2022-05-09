@@ -82,10 +82,10 @@ export function EncodesFrames<T extends Constructor<ConnectionInterface>>(
 
 			if (!data) {
 				head[1] = frame.isMasked() ? 0x80 | 0 : 0;
-			} else if (data.length > 65536) {
+			} else if (data.length >= 65536) {
 				length = this.setPayloadLength64(data);
 				head[1] = frame.isMasked() ? 0x80 | 127 : 127;
-			} else if (data.length > 125) {
+			} else if (data.length >= 126) {
 				length = this.setPayloadLength16(data);
 				head[1] = frame.isMasked() ? 0x80 | 126 : 126;
 			} else {
