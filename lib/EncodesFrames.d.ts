@@ -53,11 +53,13 @@ export declare function EncodesFrames<T extends Constructor<ConnectionInterface>
         /**
          * Send a ping frame.
          */
-        ping(): void;
+        ping(msg?: Buffer | string): void;
         /**
          * Send a pong frame.
+         *
+         * @param msg
          */
-        pong(): void;
+        pong(msg?: Buffer | string): void;
         /**
          * Send a close frame.
          */

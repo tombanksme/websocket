@@ -37,6 +37,18 @@ export class Connection extends EncodesFrames(
 			return false;
 		}
 
+		if (isControl(frame.getOp())) {
+			if (!frame.isFinal()) {
+				return false;
+			}
+
+			const data = frame.getData();
+
+			if (data && data.length > 125) {
+				return false;
+			}
+		}
+
 		return true;
 	}
 
@@ -71,6 +83,10 @@ export class Connection extends EncodesFrames(
 					this.fragments = [];
 				}
 		}
+	}
+
+	onPing(frame: FrameInterface): void {
+		this.pong(frame.getData() ?? "");
 	}
 
 	/**

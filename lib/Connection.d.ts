@@ -14,8 +14,8 @@ declare const Connection_base: {
         encodeFrame(frame: FrameInterface): Buffer;
         handleEncode(): void;
         send(data: string | Buffer): void;
-        ping(): void;
-        pong(): void;
+        ping(msg?: string | Buffer): void;
+        pong(msg?: string | Buffer): void;
         close(): void;
         server: import("./Server").Server;
         sock: Duplex;
@@ -74,6 +74,7 @@ export declare class Connection extends Connection_base {
      * @param frame
      */
     onFrame(frame: Frame): void;
+    onPing(frame: FrameInterface): void;
     /**
      * Close the connection.
      *

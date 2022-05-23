@@ -151,18 +151,24 @@ export function EncodesFrames<T extends Constructor<ConnectionInterface>>(
 		/**
 		 * Send a ping frame.
 		 */
-		ping() {
+		ping(msg: Buffer | string = "") {
+			const data = msg instanceof Buffer ? msg : Buffer.from(msg);
+
 			this.sock.write(
-				this.encodeFrame(this.makeFrame({ op: Opcode.PING }))
+				this.encodeFrame(this.makeFrame({ op: Opcode.PING, data }))
 			);
 		}
 
 		/**
 		 * Send a pong frame.
+		 *
+		 * @param msg
 		 */
-		pong() {
+		pong(msg: Buffer | string = "") {
+			const data = msg instanceof Buffer ? msg : Buffer.from(msg);
+
 			this.sock.write(
-				this.encodeFrame(this.makeFrame({ op: Opcode.PONG }))
+				this.encodeFrame(this.makeFrame({ op: Opcode.PONG, data }))
 			);
 		}
 

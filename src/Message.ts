@@ -40,7 +40,12 @@ export class Message {
 			fragments.push(
 				new Frame({
 					final: i == chunks.length - 1 ? true : false,
-					op: i == 0 ? Opcode.TXT : Opcode.CONTINUE,
+					op:
+						i == 0
+							? this.type == MessageType.TXT
+								? Opcode.TXT
+								: Opcode.BIN
+							: Opcode.CONTINUE,
 					data: chunks[i],
 				})
 			);

@@ -22,3 +22,34 @@ export * from "./Errors/UnauthorizedUpgradeError";
 // const svr = new Server(http);
 
 // http.listen(8080);
+
+import { createServer, IncomingMessage } from "http";
+import Server from "./Server";
+import Connection from "./Connection";
+import { Duplex } from "stream";
+import Message from "./Message";
+import MessageType from "./MessageType";
+
+class CustomConnection extends Connection {
+	onMessage(message: Message): void {
+		this.send(
+			message.type == MessageType.TXT
+				? message.data.toString()
+				: message.data
+		);
+	}
+}
+
+class CustomServer extends Server {
+	makeConnection(
+		req: IncomingMessage,
+		sock: Duplex,
+		head: Buffer
+	): Connection {
+		return new CustomConnection(this, sock);
+	}
+}
+
+const http = createServer();
+const svr = new CustomServer(http);
+http.listen(8080);
