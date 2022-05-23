@@ -8,7 +8,7 @@ import { IncomingMessage } from "http";
  * @returns
  */
 export function generateMask(): Buffer {
-	return randomBytes(4);
+    return randomBytes(4);
 }
 
 /**
@@ -17,10 +17,10 @@ export function generateMask(): Buffer {
  * @param req
  */
 export function makeAcceptHeader(req: IncomingMessage): string {
-	return createHash("sha1")
-		.update(
-			req.headers["sec-websocket-key"] +
-				"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-		)
-		.digest("base64");
+    return createHash("sha1")
+        .update(
+            req.headers["sec-websocket-key"] +
+                "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+        )
+        .digest("base64");
 }
