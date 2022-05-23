@@ -51,6 +51,21 @@ export class Message {
 			);
 		}
 
+		if (fragments.length == 0) {
+			fragments.push(
+				new Frame({
+					final: true,
+					op:
+						i == 0
+							? this.type == MessageType.TXT
+								? Opcode.TXT
+								: Opcode.BIN
+							: Opcode.CONTINUE,
+					data: null,
+				})
+			);
+		}
+
 		return fragments;
 	}
 
