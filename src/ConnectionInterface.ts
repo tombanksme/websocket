@@ -18,6 +18,10 @@ export class ConnectionInterface {
 			this.onChunk(chunk);
 		});
 
+		sock.on("error", () => {
+			this.destroy();
+		});
+
 		sock.on("close", () => {
 			this.destroy();
 		});

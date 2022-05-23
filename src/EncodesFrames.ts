@@ -125,7 +125,9 @@ export function EncodesFrames<T extends Constructor<ConnectionInterface>>(
 				}
 
 				for (let frame of message.toFragments()) {
-					this.sock.write(this.encodeFrame(frame));
+					if (this.sock.writable) {
+						this.sock.write(this.encodeFrame(frame));
+					}
 				}
 			}
 
@@ -154,9 +156,11 @@ export function EncodesFrames<T extends Constructor<ConnectionInterface>>(
 		ping(msg: Buffer | string = "") {
 			const data = msg instanceof Buffer ? msg : Buffer.from(msg);
 
-			this.sock.write(
-				this.encodeFrame(this.makeFrame({ op: Opcode.PING, data }))
-			);
+			if (this.sock.writable) {
+				this.sock.write(
+					this.encodeFrame(this.makeFrame({ op: Opcode.PING, data }))
+				);
+			}
 		}
 
 		/**
@@ -167,18 +171,22 @@ export function EncodesFrames<T extends Constructor<ConnectionInterface>>(
 		pong(msg: Buffer | string = "") {
 			const data = msg instanceof Buffer ? msg : Buffer.from(msg);
 
-			this.sock.write(
-				this.encodeFrame(this.makeFrame({ op: Opcode.PONG, data }))
-			);
+			if (this.sock.writable) {
+				this.sock.write(
+					this.encodeFrame(this.makeFrame({ op: Opcode.PONG, data }))
+				);
+			}
 		}
 
 		/**
 		 * Send a close frame.
 		 */
 		close() {
-			this.sock.write(
-				this.encodeFrame(this.makeFrame({ op: Opcode.CLOSE }))
-			);
+			if (this.sock.writable) {
+				this.sock.write(
+					this.encodeFrame(this.makeFrame({ op: Opcode.CLOSE }))
+				);
+			}
 		}
 	};
 }
